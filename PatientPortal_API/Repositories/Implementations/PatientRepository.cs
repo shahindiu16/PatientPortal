@@ -15,6 +15,7 @@ namespace PatientPortal_API.Repositories.Implementations
 
             var patient = new Patient();
             patient.Id = vm.Id;
+            patient.EpilepsyId = vm.EpilepsyId;
             patient.DiseaseId = vm.DiseaseId;
             patient.Name = vm.PatientName;
 
