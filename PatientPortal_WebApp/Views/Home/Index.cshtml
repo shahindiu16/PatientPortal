@@ -1,0 +1,161 @@
+﻿@model PatientViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@*<body class="hold-transition sidebar-mini">*@
+    
+<form action="@Url.Action("Save", "Home")" method="post">
+    <div class="wrapper">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-default">
+                        <div class="card-body p-0">
+                            <div class="bs-stepper">
+                                <div class="bs-stepper-content">
+                                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                                        <div class="form-group row">
+                                            <label for="exampleInputEmail1" class="col-md-2 col-form-label">Patient Name: </label>
+                                            <div class="col-md-10">
+                                                <input asp-for="PatientName" type="text" class="form-control" id="" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="exampleInputEmail1" class="col-md-2 col-form-label">Dieases Name: </label>
+                                            <div class="col-md-10">
+                                                <select asp-for="DiseaseId" class="form-control select2" style="width: 100%;">
+                                                    @foreach (var disease in ViewBag.Disease)
+                                                    {
+                                                        <option value="@disease.Id">@disease.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label for="exampleInputEmail1" class="col-md-2 col-form-label">Epilepsy: </label>
+                                            <div class="col-md-10">
+                                                <select asp-for="EpilepsyId" class="form-control select2" style="width: 100%;">
+                                                    @foreach (var epilepsy in ViewBag.Epilepsy)
+                                                    {
+                                                        <option value="@epilepsy.Id">@epilepsy.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="content-wrapper">
+                                            <br />
+
+
+                                            <section class="content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div class="form-group row">
+                                                            <label for="exampleInputEmail1" class="col-md-2 col-form-label">Others NCDs: </label>
+                                                            <div class="col-md-4">
+                                                                <div class="card card-outline card-info">
+                                                                    <select id="leftListbox" multiple="multiple">
+                                                                        @foreach (var ncd in ViewBag.Ncd)
+                                                                        {
+                                                                            <option value="@ncd.Id">@ncd.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+                                                                <div class="card card-outline card-info">
+                                                                    <button type="button" id="addButton">Add &gt;</button>
+                                                                    <button type="button" id="removeButton">&lt; Remove</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="card card-outline card-info">
+                                                                    <select asp-for="Ncds" id="rightListbox" multiple="multiple"></select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <div class="form-group row">
+                                                            <label for="exampleInputEmail1" class="col-md-2 col-form-label">Allergies: </label>
+                                                            <div class="col-md-4">
+                                                                <div class="card card-outline card-info">
+                                                                    <select id="alleftListbox" multiple="multiple">
+                                                                        @foreach (var allergies in ViewBag.Allergies)
+                                                                        {
+                                                                            <option value="@allergies.Id">@allergies.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+                                                                <div class="card card-outline card-info">
+                                                                    <button type="button" id="aladdButton">Add &gt;</button>
+                                                                    <button type="button" id="alremoveButton">&lt; Remove</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="card card-outline card-info">
+                                                                    <select asp-for="Allergies" id="alrightListbox" multiple="multiple"></select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                   </div>
+
+                                                    <div class="form-group col-md-12 text-center mt-1">
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        multiSelect('leftListbox', 'rightListbox', 'addButton', 'removeButton');
+        multiSelect('alleftListbox', 'alrightListbox', 'aladdButton', 'alremoveButton');
+    });
+    function multiSelect(leftListboxid, rightListboxid, addButtonid, removeButtonid) {
+       
+            const leftListbox = document.getElementById(leftListboxid);
+            const rightListbox = document.getElementById(rightListboxid);
+            const addButton = document.getElementById(addButtonid);
+            const removeButton = document.getElementById(removeButtonid);
+
+            addButton.addEventListener('click', function () {
+                const selectedOptions = Array.from(leftListbox.selectedOptions);
+                selectedOptions.forEach(function (option) {
+                    rightListbox.appendChild(option);
+                });
+            });
+
+            removeButton.addEventListener('click', function () {
+                const selectedOptions = Array.from(rightListbox.selectedOptions);
+                selectedOptions.forEach(function (option) {
+                    //rightListbox.removeChild(option);
+                    leftListbox.appendChild(option);
+                });
+            });
+    }
+
+    
+
+</script>
